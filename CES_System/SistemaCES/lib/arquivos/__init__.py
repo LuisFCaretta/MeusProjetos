@@ -1,5 +1,6 @@
-from SistemaCES.lib.interface import *
 import mysql.connector
+
+from SistemaCES.lib.interface import *
 
 
 def arquivoexiste():
@@ -16,36 +17,45 @@ def lerarquivo(arq_cli):
     if con.is_connected():
         cursor = con.cursor(buffered=True)
         cursor.execute("select database();")
-        cursor.execute('select * from pessoas;')
+        cursor.execute('select id, nome, nasc from pessoas;')
         print(f'{cursor.column_names[0]:<5}|{cursor.column_names[1]:<30}|{cursor.column_names[2]}')
         print('_' * 60)
+
         for row in cursor.fetchall():
             print(f'{row[0]:<5}{row[1]:<30}{row[2]}')
+
         if con.is_connected():
             cursor.close()
         con.close()
 
 
-def cadastrar(arq_cli, nome, nasc):
+def cadastrar(nome, nasc):
+    connection = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="clientes"
+    )
+    cursor = connection.cursor()
+    cursor.execute('use clientes;')
+    cursor.execute('select nome, nasc from pessoas;')
+    nomes = cursor.fetchall()
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="clientes"
-        )
-        cursor = connection.cursor()
-        sql = f"INSERT INTO pessoas VALUES(default,'{nome}','{nasc}');"
+        sql = f'INSERT INTO pessoas (nome, nasc) ' \
+              f'SELECT "{nome}", "{nasc}" FROM DUAL WHERE NOT EXISTS ' \
+              f'(SELECT 1 FROM pessoas WHERE nome = "{nome}" AND nasc = "{nasc}") ' \
+              f'LIMIT 1;'
         cursor.execute(sql)
         connection.commit()
         userid = cursor.lastrowid
         cursor.close()
         connection.close()
+
     except:
         print('Houve um erro ao escrever os dados;')
 
     else:
-        print(f"\033[34mFoi cadastrado o novo usuário de ID:", userid, ", nome:", nome, "\033[m")
+        print(f"\033[34mFoi cadastrado o novo usuário de nome: {nome}\033[m")
 
 
 def atualizar(arq_cli, nome, nasc, atualiza):
