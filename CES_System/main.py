@@ -1,8 +1,64 @@
-from SistemaCES.lib.login import *
+import mysql.connector
+from SistemaCES.lib.interface import *
 from SistemaCES.lib.arquivos import *
+import getpass
+from hashlib import sha256
 
 arq_cli = mysql.connector.connect(host='localhost', database='clientes', user='root', password='')
 arq_prod = mysql.connector.connect(host='localhost', database='produtos', user='root', password='')
+
+
+def fazer_login(situacao=False):
+    while situacao == False:
+        nome = str(input('Digite seu nome de login: ')).strip()
+        while nome == '':
+            nome = str(input('Digite seu nome de login: ')).strip()
+
+        senha = getpass.getpass('Digite sua senha: ').strip()
+        while senha == '':
+            senha = getpass.getpass('Digite sua senha: ').strip()
+            if senha != '':
+                pass
+        con = mysql.connector.connect(host='localhost',
+                                        database='cadastro',
+                                        user='root',
+                                        password='')
+        cursor = con.cursor()
+        cursor.execute(f"select nome from cadastrados where nome = '{nome}';")
+        verifica_nome = cursor.fetchall()
+        try:
+            if verifica_nome[0][0] == nome:
+                    pass
+            senhar = sha256(senha.encode()).hexdigest()
+            cursor.execute(f"select senha from cadastrados where nome = '{nome}';")
+            verifica_senha = cursor.fetchall()
+            if verifica_senha[0][0] == senhar:
+                situacao = True
+                print(f'Bem vindo(a), {nome}!', situacao)
+                return main_menu()        
+            else:
+                print('Senha incorreta')
+                return menu_login()
+        except:
+            print(f'{nome} não existe ou está incorreto!')
+            return menu_login()
+
+
+def criar_login():
+    nome = str(input('Crie seu nome de login desejado: '))
+    senha = getpass.getpass('Crie sua senha: ')
+    senha = sha256(senha.encode()).hexdigest()
+
+    con = mysql.connector.connect(host='localhost',
+                                  database='cadastro',
+                                  user='root',
+                                  password='')
+    cursor = con.cursor()
+    cursor.execute(f'insert into cadastrados values(default, "{nome}","{senha}");')
+    print(f'{nome} cadastrado com sucesso!')
+    con.close()
+    cursor.close()
+    return
 
 
 def menu_login():
@@ -11,12 +67,9 @@ def menu_login():
                      'Criar Usuário',
                      'Sair'])
         if resp == 1:
-            fazer_login()
-            return main_menu()
-
+            return fazer_login()
         elif resp == 2:
             return criar_login()
-
         elif resp == 3:
             cabecalho('Saindo...')
             break
