@@ -18,13 +18,11 @@ co8 = "#263238"   # + verde
 co9 = "#e9edf5"   # sky blue
 
 
-janela = ThemedTk(theme="yaru")
+janela = ThemedTk(theme="clearlooks")
 janela.title("Minha Biblioteca")
 janela.geometry("1005x450")
 janela.configure(background=co1)
 janela.resizable(width=False, height=False)
-
-
 
 #Divisão da tela
 #Parte de cima label_cima
@@ -135,8 +133,6 @@ def deletar():
 
     except:
         messagebox.showerror('Erro!', 'Selecione um dos dados da tabela!')
-
-
 
 
 #Parte de baixo label_baixo
