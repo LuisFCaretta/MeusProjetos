@@ -32,3 +32,4 @@ def apagar_dados(i):
     cursor = con.cursor(buffered=True)
     delete = f"delete from MeusLivros where id=%s;"
     cursor.execute(delete, i)
+
