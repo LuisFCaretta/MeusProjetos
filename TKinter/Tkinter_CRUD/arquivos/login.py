@@ -3,6 +3,7 @@ import mysql.connector
 import customtkinter
 from hashlib import sha256
 
+
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("blue")
 janela = customtkinter.CTk()
@@ -63,7 +64,7 @@ def telaLogin():
             try:
                 if admin[0] == ver[0] and admin[1] == ver[1]:
                     messagebox.showinfo('Sucesso!', f'Seja bem vindo(a), {admin[2]}!')
-                    ...
+                    janela.destroy()
                     
                 if admin[0] == ver[0] and admin[1] != ver[1]:
                     messagebox.showerror("Erro", "Senha incorreta, verifique e tente novamente!")

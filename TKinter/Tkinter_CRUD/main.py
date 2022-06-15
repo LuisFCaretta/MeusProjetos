@@ -1,11 +1,10 @@
-from email.mime import application
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
 from tkinter import *
 from arquivos.view import *
 from tkinter import messagebox
 from ttkthemes import ThemedTk
-from arquivos import login
+
 
 
 #Tabela de cores
@@ -203,11 +202,9 @@ class Application:
 
         mostrar()
 
-        root = ThemedTk(theme="black")
-        root.title("Minha Biblioteca")
-        root.geometry("1005x450")
-        root.resizable(width=False, height=False)
-        Application(root)
-        root.mainloop()
-
-
+root = ThemedTk(theme="black")
+root.title("Minha Biblioteca")
+root.geometry("1005x450")
+root.resizable(width=False, height=False)
+Application(root)
+root.mainloop()
