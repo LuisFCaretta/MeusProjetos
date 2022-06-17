@@ -6,8 +6,6 @@ from arquivos.view import *
 from tkinter import messagebox
 import customtkinter
 
-
-
 #Tabela de cores
 co0 = "#f0f3f5"  # Preta
 co1 = "#feffff"  # branca
@@ -24,6 +22,7 @@ class Application:
     def __init__(self, master=None):
         global janela
         global frame_baixo
+
         frame_cima = customtkinter.CTkFrame(janela, width=300, height=50, fg_color="#348feb", border=1)
         frame_cima.grid(row=0, column=0)
         frame_baixo = customtkinter.CTkFrame(janela, width=300, height=350, relief="flat", border=1)
@@ -34,27 +33,29 @@ class Application:
 
         btn_cadastrar = customtkinter.CTkButton(frame_baixo, text="Cadastrar", width=200, fg_color="#348feb", text_font=("Arial 24 bold"), height=10, command=tela_de_cadastro)
         btn_cadastrar.place(x=50, y=200)
-
-    
+ 
 def tela_principal():
     global janela
     janela.destroy()
-    janela = customtkinter.CTkToplevel()
+    janela = customtkinter.CTk()
+    customtkinter.set_default_color_theme("dark-blue")
     janela.title("Minha Biblioteca")
     label = customtkinter.CTkLabel(janela)
     label.place()
-    janela.geometry("1005x450")
+    janela.geometry("1000x450")
     janela.resizable(width=False, height=False)
-    frame_cima = Frame(janela, width=300, height=50, relief="flat")
+ 
+
+    frame_cima = customtkinter.CTkFrame(janela, width=300, height=50, relief="flat")
     frame_cima.grid(row=0, column=0)
 
-    frame_baixo = Frame(janela, width=300, height=400, relief="flat")
+    frame_baixo = customtkinter.CTkFrame(janela, width=300, height=400, relief="flat")
     frame_baixo.grid(row=1, column=0, sticky=NSEW, padx=0, pady=1)
 
-    frame_direita = Frame(janela, width=1000, height=400, relief="flat")
+    frame_direita = customtkinter.CTkFrame(janela, width=1000, bg_color="black", height=400, relief="flat")
     frame_direita.grid(row=0, column=1, rowspan=2, padx=1, pady=0,sticky=NSEW)
 
-    app_nome = Label(frame_cima, text="Minha Biblioteca", anchor=NW, font=("Ivy 20 bold"), fg=co3, relief="flat")
+    app_nome = customtkinter.CTkLabel(frame_cima, text="Minha Biblioteca", anchor=NW, text_font=("Ivy 20 bold"), fg=co3, relief="flat")
     app_nome.place(x=30, y=10)
 
     global tree
@@ -65,7 +66,7 @@ def tela_principal():
         di = data_entry_i.get()
         df = data_entry_f.get()
 
-        lista = [nome, desc, di, df]
+        lista = [nome, desc, di.replace("/", "-"), df.replace("/", "-")]
 
         if nome == "":
             messagebox.showerror('Erro!', 'Os dados não podem ser vazios!')
@@ -125,9 +126,8 @@ def tela_principal():
 
                 mostrar()
 
-            btn_confirmar = Button(frame_baixo, command=update, text="Confirmar", width=10, font=("Times 10 bold"), bg=co2, fg=co1, relief="solid", overrelief="ridge")
+            btn_confirmar = customtkinter.CTkButton(frame_baixo, command=update, text="Confirmar", width=10, fg_color="green", text_font=("Times 10 bold"))
             btn_confirmar.place(x=102, y=370)
-            
 
         except:
             messagebox.showerror('Erro!', 'Selecione um dos dados da tabela!')
@@ -152,39 +152,39 @@ def tela_principal():
             messagebox.showerror('Erro!', 'Selecione um dos dados da tabela!')
 
 
-    l_nome = Label(frame_baixo, text="Nome do livro", anchor=NW, font=("Times 12 bold"), fg=co4, relief="flat")
-    l_nome.place(x=30, y=0)
+    l_nome = customtkinter.CTkLabel(frame_baixo, text="Nome do livro", anchor=NW, text_font=("Times 12 bold"), fg=co4)
+    l_nome.place(x=0, y=0)
 
-    l_entry = Entry(frame_baixo, width=25, font=("Times 16 bold"), justify="left", relief="solid")
+    l_entry = customtkinter.CTkEntry(frame_baixo, width=260, text_font=("Times 16 bold"), justify="left")
     l_entry.place(x=13, y=30)
 
     #Descrição do livro
-    descricao = Label(frame_baixo, text="Descrição", anchor=NW, font=("Times 12 bold"), fg=co4, relief="flat")
-    descricao.place(x=30, y=70)
+    descricao = customtkinter.CTkLabel(frame_baixo, text="Descrição", anchor=NW, text_font=("Times 12 bold"), fg=co4)
+    descricao.place(x=-15, y=70)
 
-    descricao_entry = Entry(frame_baixo, width=25, font=("Times 16 bold"), justify="left", relief="solid")
+    descricao_entry = customtkinter.CTkEntry(frame_baixo, width=260, text_font=("Times 16 bold"), justify="left")
     descricao_entry.place(x=13, y=100)
 
     #Data de início e final
-    data_i = Label(frame_baixo, text="Início", anchor=NW, font=("Times 12 bold"), fg=co4, relief="flat")
-    data_i.place(x=30, y=140)
-    data_entry_i = DateEntry(frame_baixo, width=25,background="gray", foreground="white", borderwidth=2)
+    data_i = customtkinter.CTkLabel(frame_baixo, text="Início", anchor=NW, text_font=("Times 12 bold"), fg=co4)
+    data_i.place(x=-30, y=140)
+    data_entry_i = DateEntry(frame_baixo, width=25, background="gray", foreground="white", borderwidth=2)
     data_entry_i.place(x=13, y=170)
 
-    data_f = Label(frame_baixo, text="Final", anchor=NW, font=("Times 12 bold"), fg=co4, relief="flat")
-    data_f.place(x=30, y=220)
+    data_f = customtkinter.CTkLabel(frame_baixo, text="Final", width=260, anchor=NW, text_font=("Times 12 bold"), fg=co4)
+    data_f.place(x=-90, y=220)
     data_entry_f = DateEntry(frame_baixo, width=25, background="gray", foreground="white", borderwidth=2)
     data_entry_f.place(x=13, y=250)
 
     #Botões
-    btn_inserir = Button(frame_baixo, command=inserir, text="Inserir", width=10, font=("Times 10 bold"), bg=co2, fg=co1, relief="raised", overrelief="groove")
+    btn_inserir = customtkinter.CTkButton(frame_baixo, command=inserir, text="Inserir", width=10, fg_color="green", text_font=("Times 10 bold"))
     btn_inserir.place(x=13, y=340)
 
-    btn_atualizar = Button(frame_baixo, command=atualizar, text="Atualizar", width=10, font=("Times 10 bold"), bg=co6, fg=co1, relief="raised", overrelief="groove")
+    btn_atualizar = customtkinter.CTkButton(frame_baixo, command=atualizar, text="Atualizar", width=10, text_font=("Times 8 bold"))
     btn_atualizar.place(x=103, y=340)
 
-    btn_apagar = Button(frame_baixo, command=deletar, text="Apagar", width=10, font=("Times 10 bold"), bg=co7, fg=co1, relief="raised", overrelief="groove")
-    btn_apagar.place(x=193, y=340)
+    btn_apagar = customtkinter.CTkButton(frame_baixo, command=deletar, fg_color="#ef5350", text="Apagar", width=10, text_font=("Times 10 bold"))
+    btn_apagar.place(x=203, y=340)
 
     def mostrar():
         global tree
@@ -194,7 +194,7 @@ def tela_principal():
 
         # criando a tabela
         tree = ttk.Treeview(frame_direita, selectmode="extended", columns=tabela_head, show="headings")
-
+        
         # vertical scrollbar
         vsb = ttk.Scrollbar(frame_direita, orient="vertical", command=tree.yview)
 
@@ -230,6 +230,7 @@ def tela_de_login():
     global janela
     janela.destroy()
     janela = customtkinter.CTkToplevel()
+    customtkinter.set_default_color_theme("dark-blue")
     janela.deiconify()
     janela.title("Minha biblioteca login")
     label = customtkinter.CTkLabel(janela)
@@ -292,6 +293,8 @@ def tela_de_cadastro():
     global janela
     janela.destroy()
     janela = customtkinter.CTkToplevel()
+    customtkinter.set_default_color_theme("dark-blue")
+    janela.deiconify()
     janela.title("Minha Biblioteca Cadastro")
     janela.geometry("300x500")
     janela.resizable(width=False, height=False)
@@ -363,12 +366,14 @@ def tela_de_cadastro():
     btn_cadastrar.place(x=50, y=340)
 
 
-janela = customtkinter.CTkToplevel()
-janela.deiconify()
-janela.title("Minha biblioteca login")
-label = customtkinter.CTkLabel(janela)
-label.place()
-janela.geometry("300x400")
-Application(janela)
-janela.resizable(width=False, height=False)
-janela.mainloop()
+if __name__ == "__main__":
+    janela = customtkinter.CTk()
+    janela.title("Minha biblioteca login")
+    label = customtkinter.CTkLabel(janela)
+    customtkinter.set_default_color_theme(("dark-blue"))  # Themes: "blue" (standard), "green", "dark-blue"
+    label.place()
+    janela.geometry("300x400")
+    Application(janela)
+    janela.resizable(width=False, height=False)
+    janela.mainloop()
+    
