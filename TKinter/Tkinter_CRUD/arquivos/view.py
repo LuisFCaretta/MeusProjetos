@@ -37,4 +37,3 @@ def apagar_dados(i):
     cursor.execute('use db_livros;')
     delete = f"delete from MeusLivros where id=%s;"
     cursor.execute(delete, i)
-

@@ -1,13 +1,21 @@
+import sys
 from cx_Freeze import setup, Executable
 
-base = None    
+build_exe_options = ["tkinter"]
+
+base = None
+if sys.platform == "win32":
+    base = "Win32GUI"    
 
 executables = [Executable("main.py", base=base)]
 
-packages = ["idna"]
+packages = ["idna", "os"]
+
 options = {
     'build_exe': {    
         'packages':packages,
+        'includes':build_exe_options
+
     },    
 }
 

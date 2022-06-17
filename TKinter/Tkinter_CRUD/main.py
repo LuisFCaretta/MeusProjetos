@@ -6,6 +6,7 @@ from arquivos.view import *
 from tkinter import messagebox
 import customtkinter
 
+
 #Tabela de cores
 co0 = "#f0f3f5"  # Preta
 co1 = "#feffff"  # branca
@@ -34,18 +35,18 @@ class Application:
         btn_cadastrar = customtkinter.CTkButton(frame_baixo, text="Cadastrar", width=200, fg_color="#348feb", text_font=("Arial 24 bold"), height=10, command=tela_de_cadastro)
         btn_cadastrar.place(x=50, y=200)
  
+
 def tela_principal():
     global janela
-    janela.destroy()
-    janela = customtkinter.CTk()
+    janela = customtkinter.CTkToplevel()
+    janela.withdraw()
     customtkinter.set_default_color_theme("dark-blue")
     janela.title("Minha Biblioteca")
     label = customtkinter.CTkLabel(janela)
     label.place()
-    janela.geometry("1000x450")
+    janela.geometry("1000x450+150+100")
     janela.resizable(width=False, height=False)
  
-
     frame_cima = customtkinter.CTkFrame(janela, width=300, height=50, relief="flat")
     frame_cima.grid(row=0, column=0)
 
@@ -168,12 +169,12 @@ def tela_principal():
     #Data de início e final
     data_i = customtkinter.CTkLabel(frame_baixo, text="Início", anchor=NW, text_font=("Times 12 bold"), fg=co4)
     data_i.place(x=-30, y=140)
-    data_entry_i = DateEntry(frame_baixo, width=25, background="gray", foreground="white", borderwidth=2)
+    data_entry_i = DateEntry(frame_baixo, selectmode='day',date_pattern='dd-mm-yyyy', width=25, background="gray", foreground="white", borderwidth=2)
     data_entry_i.place(x=13, y=170)
 
     data_f = customtkinter.CTkLabel(frame_baixo, text="Final", width=260, anchor=NW, text_font=("Times 12 bold"), fg=co4)
     data_f.place(x=-90, y=220)
-    data_entry_f = DateEntry(frame_baixo, width=25, background="gray", foreground="white", borderwidth=2)
+    data_entry_f = DateEntry(frame_baixo, selectmode='day',date_pattern='dd-mm-yyyy', width=25, background="gray", foreground="white", borderwidth=2)
     data_entry_f.place(x=13, y=250)
 
     #Botões
@@ -228,14 +229,13 @@ def tela_principal():
 
 def tela_de_login():
     global janela
-    janela.destroy()
+    janela.withdraw()
     janela = customtkinter.CTkToplevel()
     customtkinter.set_default_color_theme("dark-blue")
-    janela.deiconify()
     janela.title("Minha biblioteca login")
     label = customtkinter.CTkLabel(janela)
     label.place()
-    janela.geometry("300x400")
+    janela.geometry("300x400+500+100")
     janela.resizable(width=False, height=False)
 
     frame_cima = customtkinter.CTkFrame(janela, width=300, height=50, fg_color="#348feb", border=1)
@@ -275,8 +275,9 @@ def tela_de_login():
         for admin in verifica:
             if admin[0] == ver[0] and admin[1] == ver[1]:
                 messagebox.showinfo('Sucesso!', f'Seja bem vindo(a), {admin[2]}!')
+                janela.withdraw()
                 tela_principal()
-                janela.destroy()
+                
                 
             if admin[0] == ver[0] and admin[1] != ver[1]:
                 messagebox.showerror("Erro", "Senha incorreta, verifique e tente novamente!")
@@ -291,12 +292,11 @@ def tela_de_login():
 def tela_de_cadastro():
     global frame_baixo
     global janela
-    janela.destroy()
+    janela.withdraw()
     janela = customtkinter.CTkToplevel()
     customtkinter.set_default_color_theme("dark-blue")
-    janela.deiconify()
     janela.title("Minha Biblioteca Cadastro")
-    janela.geometry("300x500")
+    janela.geometry("300x500+500+100")
     janela.resizable(width=False, height=False)
 
     frame_cima = customtkinter.CTkFrame(janela, width=300, height=50, fg_color="#348feb", relief="flat", border=1)
@@ -369,11 +369,10 @@ def tela_de_cadastro():
 if __name__ == "__main__":
     janela = customtkinter.CTk()
     janela.title("Minha biblioteca login")
-    label = customtkinter.CTkLabel(janela)
+    label = customtkinter.CTkLabel()
     customtkinter.set_default_color_theme(("dark-blue"))  # Themes: "blue" (standard), "green", "dark-blue"
     label.place()
-    janela.geometry("300x400")
+    janela.geometry("300x400+500+100")
     Application(janela)
     janela.resizable(width=False, height=False)
     janela.mainloop()
-    
